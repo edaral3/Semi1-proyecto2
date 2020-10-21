@@ -1,0 +1,126 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Esta plantilla crea todos los componentes necesarios para una VPC que utilizaran las instancias EC2 para el proyecto 2 del curso seminario de sistemas 1.
+  
+Parameters:
+  DefaultCidrBlock:
+    Description: Corresponde al identificador de la red.
+    Type: String
+    Default: 172.96.0.0/16
+
+Resources:
+  VPC:
+    Description: Corresponde a una nueva VPC
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock:
+        Ref: DefaultCidrBlock
+      Tags:
+        - Key: Name
+          Value: vpc-g21
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: ig-g21
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: 
+        Ref: InternetGateway
+      VpcId: 
+        Ref: VPC
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: 
+        Ref: VPC
+      AvailabilityZone: !Select [ 0, !GetAZs { Ref: "AWS::Region" } ]
+      CidrBlock: !Select [146, !Cidr [!Ref DefaultCidrBlock, 150, 8]]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: subnet-public-g21
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: 
+        Ref: VPC
+      AvailabilityZone: !Select [1 , !GetAZs { Ref: "AWS::Region" } ]
+      CidrBlock: !Select [147, !Cidr [!Ref DefaultCidrBlock, 150, 8]]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: subnet-private-g21
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: rt-public-g21
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: rt-private-g21
+
+  PrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnet
+
+Outputs:
+  oVPC:
+    Description: Se creo la VPC 
+    Value: !Ref VPC
+  oInternetGateway:
+    Description: Se creo el Internet Gateway
+    Value: !Ref InternetGateway
+  oInternetGatewayAttachment:
+    Description: Se asocio el Internet Gateway a la VPC
+    Value: !Ref InternetGatewayAttachment
+  oPublicSubnet:
+    Description: Se creo la subnet publica
+    Value: !Ref PublicSubnet
+  oPrivateSubnet:
+    Description: Se creo la subnet privada
+    Value: !Ref PrivateSubnet
+  oPublicRouteTable:
+    Description: Se creo la tabla de ruteo para la subnet publica
+    Value: !Ref PublicRouteTable
+  oPublicRoute:
+    Description: Se creo una ruta para la tabla de ruteo publica
+    Value: !Ref PublicRoute
+  oPublicSubnetRouteTableAssociation:
+    Description: Se asocio la subnet publica a la tabla de ruteo
+    Value: !Ref PublicSubnetRouteTableAssociation
+  oPrivateRouteTable:
+    Description: Se creo la tabla de ruteo para la subnet privada
+    Value: !Ref PrivateRouteTable
+  oPrivateSubnetRouteTableAssociation:
+    Description: Se asocio la subnet privada a la tabla de ruteo
+    Value: !Ref PrivateSubnetRouteTableAssociation
