@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  database:
+    image: 'mongo'
+    container_name: 'uSocialDB'
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - 27018:27017
+volumes:
+  mongodb_data_container:
