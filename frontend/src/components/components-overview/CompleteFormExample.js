@@ -7,102 +7,154 @@ import {
   Col,
   Form,
   FormInput,
-  FormGroup,
-  FormCheckbox,
-  FormSelect,
   Button
 } from "shards-react";
 
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const videoConstraints = {
   width: 500,
   height: 300,
   facingMode: "user"
 };
- 
+
+var usuario = "";
+var nombre = "";
+var contrasena1 = "";
+var contrasena2 = "";
+var imagen = "";
+
 const CompleteFormExample = () => {
 const webcamRef = React.useRef(null);
   
+const registrar = () => {
+  let body ={
+    usuario: usuario,
+    nombre: nombre,
+    contrasena1: contrasena1,
+    contrasena2: contrasena2,
+    imagen: imagen 
+  }
+  console.log(body)
+  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+      .then(result => {
+      })
+      .catch()  */
+
+}
  
 const capture = React.useCallback(
   () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log(imageSrc)
-    console.log("------------------------------------------------------------------------------------")
+    imagen = imageSrc
   },
   [webcamRef]
 );
- 
+
+const actualizarNombre = (e)=>{
+  nombre = e.target.value
+}
+const actualizarUsario = (e)=>{
+  usuario = e.target.value
+}
+const actualizarContra1 = (e)=>{
+  contrasena1 = e.target.value
+}
+const actualizarContra2 = (e)=>{
+  contrasena2 = e.target.value
+}
 
     return (
-<ListGroup flush>
-    <ListGroupItem className="p-3">
-      <Row>
-        <Col>
-          <Form>
-            <Row form>
-              <Col md="6" className="form-group">
-                <label htmlFor="feEmailAddress">Nombre Completo</label>
-                <FormInput
-                  id="feEmailAddress"
-                  type="user"
-                  placeholder="Nombre"
-                />
-              </Col>
-              <Col md="6" className="form-group">
-                <label htmlFor="feEmailAddress">Usuario</label>
-                <FormInput
-                  id="user"
-                  type="user"
-                  placeholder="User"
-                />
-              </Col>
-              <Col md="6">
-                <label htmlFor="fePassword">Contraseña</label>
-                <FormInput
-                  id="fePassword"
-                  type="password"
-                  placeholder="Password"
-                />
-              </Col>
-              <Col md="6">
-                <label htmlFor="fePassword">Repetir Contraseña</label>
-                <FormInput
-                  id="fePassword2"
-                  type="password"
-                  placeholder="Password"
-                />
-              </Col>
-            </Row>
-            <br></br>
-            <Row form>
-              <Col md="6">
-                <Webcam
-                  audio={false}
-                  height={300}
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  width={650}
-                  videoConstraints={videoConstraints}
-                />
+      <ListGroup flush>
+        <ListGroupItem className="p-3">
+          <Row>
+            <Col>
+              <Form>
+                <Row form>
+                  <Col md="6" className="form-group">
+                    <label htmlFor="feEmailAddress">Nombre Completo</label>
+                    <FormInput
+                      onChange={actualizarNombre.bind(this)}
+                      id="feEmailAddress"
+                      type="user"
+                      placeholder="Nombre"
+                    />
+                  </Col>
+                  <Col md="6" className="form-group">
+                    <label htmlFor="feEmailAddress">Usuario</label>
+                    <FormInput
+                      onChange={actualizarUsario.bind(this)}
+                      id="user"
+                      type="user"
+                      placeholder="User"
+                    />
+                  </Col>
+                  <Col md="6">
+                    <label htmlFor="fePassword">Contraseña</label>
+                    <FormInput
+                      onChange={actualizarContra1.bind(this)}
+                      id="fePassword"
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </Col>
+                  <Col md="6">
+                    <label htmlFor="fePassword">Repetir Contraseña</label>
+                    <FormInput
+                      onChange={actualizarContra2.bind(this)}
+                      id="fePassword2"
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </Col>
+                </Row>
                 <br></br>
-                <button onClick={capture}>Tomar Foto</button>      
-              </Col>
-            </Row>
+                <Row form>
+
+                </Row>
+
+              </Form>
+            </Col>
+          </Row>
+          <Col md="6">
+            <Webcam
+              audio={false}
+              height={300}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              width={1200}
+              videoConstraints={videoConstraints}
+            />
             <br></br>
-            <Row>
-              <Col>
-                <Button type="submit">Registrar Usuario</Button>
-              </Col>
-            </Row>    
-            <br></br>
-            <Link to="/Login" className="link">Iniciar Sesion</Link>  
-          </Form>
-        </Col>
-      </Row>
-    </ListGroupItem>
-  </ListGroup>
+          </Col>
+          <Row>
+          </Row>
+          <Row>
+            <Col></Col>
+            <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
+
+          </Row>
+          <br></br>
+          <Row>
+
+            <Col></Col>
+            <Col>
+              <Button
+                onClick={registrar}
+                type="submit">
+                Registrar
+                  </Button>
+              <br></br>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Link to="/Login" className="link">Iniciar Sesion</Link>
+            </Col>
+          </Row>
+        </ListGroupItem>
+      </ListGroup>
     );
 }
 export default CompleteFormExample;

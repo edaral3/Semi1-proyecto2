@@ -8,7 +8,7 @@ import {
 } from "shards-react";
 import FormPerfil from "../components/components-overview/FormPerfil";
 
-const SignUp = () => (
+const Perfil = () => (
   <div>
     <Container fluid className="px-0">
     </Container>
@@ -30,4 +30,4 @@ const SignUp = () => (
   </div>
 );
 
-export default SignUp;
+export default Perfil;

@@ -1,5 +1,6 @@
 import React from "react";
 import Webcam from "react-webcam";
+import usr from '../../userLoguin';
 import {
   ListGroup,
   ListGroupItem,
@@ -10,31 +11,66 @@ import {
   Button
 } from "shards-react";
 
-
-import ToggleButtons from "./ToggleButtons";
+import { Link } from 'react-router-dom';
 import { FormCheckbox } from "shards-react";
+import axios from 'axios';
 
+const videoConstraints = {
+  width: 500,
+  height: 300,
+  facingMode: "user"
+};
 
+var usuario = "";
+var nombre = "";
+var contrasena = "";
+var state = true;
+var imagen = "";
 
-
-var estad = false
-class FormPerfil extends React.Component {
+const CompleteFormExample = () => {
+const webcamRef = React.useRef(null);
   
-  constructor(props){
-    super(props);
-    this.state = {
-      estado: false,
-      img: "https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg"
-    };
+const registrar = () => {
+  let body ={
+    usuario: usuario,
+    nombre: nombre,
+    contrasena1: contrasena,
+    imagen: imagen 
   }
+  
+  console.log("------------------")
+  console.log(usr.usuario)
+  console.log("------------------")
+  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+      .then(result => {
+      })
+      .catch()  */
 
-  obtenerCheck = () => {
-    this.state.estado = !this.state.estado
-  }
+}
+ 
+const capture = React.useCallback(
+  () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    imagen = imageSrc
+  },
+  [webcamRef]
+);
 
-render() {
+const actualizarNombre = (e)=>{
+  nombre = e.target.value
+}
+const actualizarUsario = (e)=>{
+  usuario = e.target.value
+}
+const actualizarContra1 = (e)=>{
+  contrasena = e.target.value
+}
+const obtenerCheck = () => {
+  state = !state
+}
+
     return (
-    <ListGroup flush>
+      <ListGroup flush>
         <ListGroupItem className="p-3">
           <Row>
             <Col>
@@ -43,6 +79,7 @@ render() {
                   <Col md="6" className="form-group">
                     <label htmlFor="feEmailAddress">Nombre Completo</label>
                     <FormInput
+                      onChange={actualizarNombre.bind(this)}
                       id="feEmailAddress"
                       type="user"
                       placeholder="Nombre"
@@ -51,6 +88,7 @@ render() {
                   <Col md="6" className="form-group">
                     <label htmlFor="feEmailAddress">Usuario</label>
                     <FormInput
+                      onChange={actualizarUsario.bind(this)}
                       id="user"
                       type="user"
                       placeholder="User"
@@ -59,46 +97,64 @@ render() {
                   <Col md="6">
                     <label htmlFor="fePassword">Contraseña</label>
                     <FormInput
+                      onChange={actualizarContra1.bind(this)}
                       id="fePassword"
                       type="password"
                       placeholder="Password"
                     />
                   </Col>
                   <Col md="6">
-                    <label htmlFor="fePassword">Repetir Contraseña</label>
-                    <FormInput
-                      id="fePassword2"
-                      type="password"
-                      placeholder="Password"
-                    />
+                <br></br>
+                    <FormCheckbox toggle small 
+                        defaultChecked = {state}
+                        onClick={obtenerCheck}>
+                      Modo Bot
+                    </FormCheckbox>
                   </Col>
                 </Row>
-                <br></br>
-          <FormCheckbox toggle small 
-              onClick={this.obtenerCheck}>
-            Modo Bot
-          </FormCheckbox>
                 <br></br>
                 <Row form>
-                  <Col md="6">
-                    <img src={this.state.img} />      
-                          
-                    <br></br>   
-                  </Col>
+
                 </Row>
-                <br></br>
-                <Row>
-                  <Col>
-                    <Button type="submit">Guardar Datos</Button>
-                  </Col>
-                </Row>    
-                <br></br> 
+
               </Form>
             </Col>
+          </Row>
+          <Col md="6">
+            <Webcam
+              audio={false}
+              height={300}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              width={1200}
+              videoConstraints={videoConstraints}
+            />
+            <br></br>
+          </Col>
+          <Row>
+          </Row>
+          <Row>
+            <Col></Col>
+            <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
+
+          </Row>
+          <br></br>
+          <Row>
+
+            <Col></Col>
+            <Col>
+              <Button
+                onClick={registrar}
+                type="submit">
+                Actualiizar
+                  </Button>
+              <br></br>
+            </Col>
+          </Row>
+          <Row>
           </Row>
         </ListGroupItem>
       </ListGroup>
     );
 }
-}
-export default FormPerfil;
+export default CompleteFormExample;

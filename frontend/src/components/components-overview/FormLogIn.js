@@ -9,13 +9,40 @@ import {
   Button
 } from "shards-react";
 
+import usr from '../../userLoguin';
 import { Link, withRouter  } from 'react-router-dom';
-let route = "/Login";
-const CompleteFormExample = () => {
+import axios from 'axios';
   
+const login = () => {
+  let body ={
+    usuario: user,
+    contrasena: pass
+  }
+  console.log(body)
+  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+      .then(result => {
+      })
+      .catch()  */
+    
+      route = "/"
+      usr.usuario = "user1"
+    }
+let route = "/Login";
 
+const user = "";
+const pass = "";
+
+const actualizarUsuario = (e)=>{
+  user = e.target.value
+}
+const actualizarContra = (e)=>{
+  pass = e.target.value
+}
+
+const CompleteFormExample = () => {
   let iniciarSesion = () => {
     route = "/"
+    usr.usuario = "user1"
   }  
   
     return (
@@ -27,7 +54,8 @@ const CompleteFormExample = () => {
                 <Row form>
                   <Col md="6" className="form-group">
                     <label htmlFor="feEmailAddress">Usuario</label>
-                    <FormInput
+                    <FormInput                    
+                      onChange={actualizarUsuario.bind(this)}
                       id="user"
                       type="user"
                       placeholder="User"
@@ -39,6 +67,7 @@ const CompleteFormExample = () => {
                 <Col md="6">
                     <label htmlFor="fePassword">Contraseña</label>
                     <FormInput
+                      onChange={actualizarContra.bind(this)}
                       id="fePassword"
                       type="password"
                       placeholder="Password"
