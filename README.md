@@ -8,7 +8,7 @@
 |Erick Fernando Reyes Mancilla|200915347|
 |Edgar Arnoldo Aldana Arriola|201602797|
 
-### Documentacion
+### Documentación
 * **Arquitectura:** [Arquitectura.md](Arquitectura.md)
 * **Red:** [Red.md](Red.md)
 * **Usuarios:** [Usuarios.md](Usuarios.md)
