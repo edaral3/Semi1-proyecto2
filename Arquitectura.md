@@ -14,6 +14,9 @@
 * ``Node.js``: es un entorno de ejecución de JavaScript orientado a eventos asíncronos.
 * ``Sha1``: es una función hash criptográfica ampliamente utilizado, que genera un 160 bits (20 bytes) hash a partir de cualquier valor de entrada.
 
+### Base de datos
+* ``MongoDB``: es una base de datos orientada a documentos y de esquema libre que proporciona alta capacidad de almacenamiento, velocidad en las consultas, además de ser fácilmente escalable.
+
 ### Machine Learning
 * ``Rekognition``: puede identificar objetos, personas, texto, escenas y actividades en imágenes y videos, además de detectar cualquier contenido inapropiado.
 * ``Translate``: es un servicio de traducción automática neuronal que ofrece una traducción de idiomas rápida, de alta calidad y asequible.
