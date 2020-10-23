@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  api-node:
+    image: 'api-rest-proyecto2'
+    container_name: 'api-rest'
+    command: npm start
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - 3000:3000
