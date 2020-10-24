@@ -16,7 +16,7 @@ import usr from '../../userLoguin';
 var base64 = "";
 var estado = "";
 
-function doClick(inp) {
+function doClick() {
   let file = document.getElementById("input").files[0];
   var reader = new FileReader();
   reader.readAsDataURL(file);
@@ -34,9 +34,10 @@ const publicar = () => {
     _id : usr.usuario._id, //corresponde al id del usuario que realizo la publicacion
     sourceBase64 :base64
   }
+  console.log(body)
   axios.post('http://54.163.33.24/publication/create', body)
       .then(result => {
-        usr.usuario = result.data.user
+        console.log(result)
       })
       .catch()  
 }
@@ -63,11 +64,11 @@ const NewDraft = ({ title }) => (
           <br></br>
         </FormGroup>
           <br></br>
+      </Form>
+    </CardBody>
           <Button onClick={publicar} theme="accent" type="submit">
             Publicar
           </Button>
-      </Form>
-    </CardBody>
   </Card>
 );
 
