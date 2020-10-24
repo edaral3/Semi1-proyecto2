@@ -24,24 +24,34 @@ var nombre = "";
 var contrasena1 = "";
 var contrasena2 = "";
 var imagen = "";
+var error = "";
 
 const CompleteFormExample = () => {
 const webcamRef = React.useRef(null);
   
 const registrar = () => {
+  if(usuario==""||nombre==""||
+  contrasena1==""||contrasena2==""){
+    error = "Los datos estan incompletos"
+    return
+  }
+  if(contrasena1 != contrasena2){
+    error = "Las contraseñas no coinciden"
+    return
+  }
   let body ={
-    usuario: usuario,
-    nombre: nombre,
-    contrasena1: contrasena1,
-    contrasena2: contrasena2,
-    imagen: imagen 
+    user: usuario,
+    name: nombre,
+    pass: contrasena1,
+    sourceBase64: imagen 
   }
   console.log(body)
-  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+  axios.post('http://54.163.33.24/user/signin', body)
       .then(result => {
+        console.log(result)
       })
-      .catch()  */
-
+      .catch()  
+      error = "Usuario registrado"
 }
  
 const capture = React.useCallback(
@@ -111,9 +121,7 @@ const actualizarContra2 = (e)=>{
                 </Row>
                 <br></br>
                 <Row form>
-
                 </Row>
-
               </Form>
             </Col>
           </Row>
@@ -137,7 +145,6 @@ const actualizarContra2 = (e)=>{
           </Row>
           <br></br>
           <Row>
-
             <Col></Col>
             <Col>
               <Button
@@ -151,6 +158,12 @@ const actualizarContra2 = (e)=>{
           <Row>
             <Col>
               <Link to="/Login" className="link">Iniciar Sesion</Link>
+            </Col>
+          </Row> <Row>
+            <Col></Col>
+            <Col>      
+              {error}
+              <br></br>
             </Col>
           </Row>
         </ListGroupItem>

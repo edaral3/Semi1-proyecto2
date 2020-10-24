@@ -10,32 +10,62 @@ import {
   FormTextarea,
   Button
 } from "shards-react";
+import axios from 'axios';
+import usr from '../../userLoguin';
+
+var base64 = "";
+var estado = "";
+
+function doClick(inp) {
+  let file = document.getElementById("input").files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    base64 = reader.result
+  };
+}
+
+const actualizarEstado = (e) => {
+  estado = e.target.value
+}
+const publicar = () => {
+  let body = {
+    description : estado,
+    _id : usr.usuario._id, //corresponde al id del usuario que realizo la publicacion
+    sourceBase64 :base64
+  }
+  axios.post('http://54.163.33.24/publication/create', body)
+      .then(result => {
+        usr.usuario = result.data.user
+      })
+      .catch()  
+}
 
 const NewDraft = ({ title }) => (
   <Card small className="h-100">
     {/* Card Header */}
     <CardHeader className="border-bottom">
-      <h6 className="m-0">{title}</h6>
+      <h6 className="m-0">Nueva publicacioin</h6>
     </CardHeader>
 
     <CardBody className="d-flex flex-column">
       <Form className="quick-post-form">
-        {/* Title */}
-        <FormGroup>
-          <FormInput placeholder="Brave New World" />
-        </FormGroup>
-
+   
         {/* Body */}
         <FormGroup>
-          <FormTextarea placeholder="Words can be like X-rays if you use them properly..." />
+          <FormTextarea onChange={actualizarEstado.bind(this)} placeholder="En que estas pensando?" />
         </FormGroup>
 
         {/* Create Draft */}
         <FormGroup className="mb-0">
-          <Button theme="accent" type="submit">
-            Create Draft
-          </Button>
+          
+        <input type="file" id="input" onChange={doClick}></input>
+          <br></br>
         </FormGroup>
+          <br></br>
+          <Button onClick={publicar} theme="accent" type="submit">
+            Publicar
+          </Button>
       </Form>
     </CardBody>
   </Card>

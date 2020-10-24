@@ -21,140 +21,172 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-var usuario = "";
-var nombre = "";
-var contrasena = "";
-var state = true;
-var imagen = "";
+var usuario = usr.usuario.username;
+var nombre = usr.usuario.fullname;
+var contrasena = usr.pass;
+var state = usr.usuario.modeBot;
+var imagen = usr.usuario.profileImage;
 
 const CompleteFormExample = () => {
-const webcamRef = React.useRef(null);
-  
-const registrar = () => {
-  let body ={
-    usuario: usuario,
-    nombre: nombre,
-    contrasena1: contrasena,
-    imagen: imagen 
+  const webcamRef = React.useRef(null);
+
+
+  const cargarDatos = () => {
+    let body ={
+      user: usr.usuario.username,
+      pass: usr.pass
+    }
+    axios.post('http://54.163.33.24/user/login', body)
+      .then(result => {
+        usr.usuario = result.data.user
+      })
+      .catch()  
   }
-  
-  console.log("------------------")
-  console.log(usr.usuario)
-  console.log("------------------")
-  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+
+  const registrar = () => {
+    if(usuario == undefined || usuario == ""){
+      usuario =  usr.usuario.username
+    }else{
+      usr.usuario.username = usuario
+    }
+    if(nombre == undefined || nombre == ""){
+      nombre =  usr.usuario.fullname
+    }else{
+      usr.usuario.fullname = nombre
+    }
+    if(contrasena == undefined || contrasena == ""){
+      contrasena =  usr.pass
+    }else{
+      usr.pass = contrasena
+    }
+    if(state == undefined){
+      state =  usr.usuario.modeBot
+    }
+    let body = {
+        user : usuario,
+        name : nombre,
+        pass : contrasena,
+        modeBot : state,
+        sourceBase64 : imagen
+    }
+    axios.put('http://54.163.33.24/user/update/' + usr.usuario._id, body)
       .then(result => {
       })
-      .catch()  */
+      .catch()
 
-}
- 
-const capture = React.useCallback(
-  () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    imagen = imageSrc
-  },
-  [webcamRef]
-);
+  }
 
-const actualizarNombre = (e)=>{
-  nombre = e.target.value
-}
-const actualizarUsario = (e)=>{
-  usuario = e.target.value
-}
-const actualizarContra1 = (e)=>{
-  contrasena = e.target.value
-}
-const obtenerCheck = () => {
-  state = !state
-}
+  const capture = React.useCallback(
+    () => {
+      const imageSrc = webcamRef.current.getScreenshot();
+      imagen = imageSrc
+    },
+    [webcamRef]
+  );
 
-    return (
-      <ListGroup flush>
-        <ListGroupItem className="p-3">
-          <Row>
-            <Col>
-              <Form>
-                <Row form>
-                  <Col md="6" className="form-group">
-                    <label htmlFor="feEmailAddress">Nombre Completo</label>
-                    <FormInput
-                      onChange={actualizarNombre.bind(this)}
-                      id="feEmailAddress"
-                      type="user"
-                      placeholder="Nombre"
-                    />
-                  </Col>
-                  <Col md="6" className="form-group">
-                    <label htmlFor="feEmailAddress">Usuario</label>
-                    <FormInput
-                      onChange={actualizarUsario.bind(this)}
-                      id="user"
-                      type="user"
-                      placeholder="User"
-                    />
-                  </Col>
-                  <Col md="6">
-                    <label htmlFor="fePassword">Contraseña</label>
-                    <FormInput
-                      onChange={actualizarContra1.bind(this)}
-                      id="fePassword"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </Col>
-                  <Col md="6">
-                <br></br>
-                    <FormCheckbox toggle small 
-                        defaultChecked = {state}
-                        onClick={obtenerCheck}>
-                      Modo Bot
+  const actualizarNombre = (e) => {
+    nombre = e.target.value
+  }
+  const actualizarUsario = (e) => {
+    usuario = e.target.value
+  }
+  const actualizarContra1 = (e) => {
+    contrasena = e.target.value
+  }
+  const obtenerCheck = () => {
+    state = !state
+  }
+
+  return (
+    <ListGroup flush>
+      <ListGroupItem className="p-3">
+        <Row>
+          <Col><Button onClick={cargarDatos}>Cargar Datos</Button>  </Col>
+
+        </Row>
+        <Row>
+          <Col>
+            <Form>
+              <Row form>
+                <Col md="6" className="form-group">
+                  <label htmlFor="feEmailAddress">Nombre Completo</label>
+                  <FormInput
+                    onChange={actualizarNombre.bind(this)}
+                    id="feEmailAddress"
+                    type="user"
+                    placeholder={usr.usuario.fullname}
+                  />
+                </Col>
+                <Col md="6" className="form-group">
+                  <label htmlFor="feEmailAddress">Usuario</label>
+                  <FormInput
+                    onChange={actualizarUsario.bind(this)}
+                    id="user"
+                    type="user"
+                    placeholder={usr.usuario.username}
+                  />
+                </Col>
+                <Col md="6">
+                  <label htmlFor="fePassword">Contraseña</label>
+                  <FormInput
+                    onChange={actualizarContra1.bind(this)}
+                    id="fePassword"
+                    type="password"
+                    placeholder={usr.pass}
+                  />
+                </Col>
+                <Col md="6">
+                  <br></br>
+                  <FormCheckbox toggle small
+                    defaultChecked={state}
+                    onClick={obtenerCheck}>
+                    Modo Bot
                     </FormCheckbox>
-                  </Col>
-                </Row>
-                <br></br>
-                <Row form>
+                </Col>
+              </Row>
+              <br></br>
 
-                </Row>
-
-              </Form>
-            </Col>
-          </Row>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
+            <img src={usr.usuario.profileImage} width="500" height="300" />
+          </Col>
           <Col md="6">
             <Webcam
               audio={false}
-              height={300}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
-              width={1200}
               videoConstraints={videoConstraints}
             />
             <br></br>
           </Col>
-          <Row>
-          </Row>
-          <Row>
-            <Col></Col>
-            <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
+        </Row>
+        <Row>
+        </Row>
+        <Row>
+          <Col>
+            <Button
+              onClick={registrar}
+              type="submit">
+              Actualizar
+                  </Button></Col>
+          <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
 
-          </Row>
-          <br></br>
-          <Row>
+        </Row>
+        <br></br>
+        <Row>
 
-            <Col></Col>
-            <Col>
-              <Button
-                onClick={registrar}
-                type="submit">
-                Actualiizar
-                  </Button>
-              <br></br>
-            </Col>
-          </Row>
-          <Row>
-          </Row>
-        </ListGroupItem>
-      </ListGroup>
-    );
+          <Col></Col>
+          <Col>
+            <br></br>
+          </Col>
+        </Row>
+        <Row>
+        </Row>
+      </ListGroupItem>
+    </ListGroup>
+  );
 }
 export default CompleteFormExample;

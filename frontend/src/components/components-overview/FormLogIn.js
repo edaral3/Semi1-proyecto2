@@ -15,22 +15,28 @@ import axios from 'axios';
   
 const login = () => {
   let body ={
-    usuario: user,
-    contrasena: pass
+    user: user,
+    pass: pass
   }
   console.log(body)
-  /*axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
+  axios.post('http://54.163.33.24/user/login', body)
       .then(result => {
+        if(result.data.message!="Usuario o contraseña no valido"){
+          route = "/"
+          usr.usuario = result.data.user
+          usr.pass = pass
+        }
+        else{
+          route = "/Login";
+        }   
       })
-      .catch()  */
+      .catch()  
     
-      route = "/"
-      usr.usuario = "user1"
     }
 let route = "/Login";
 
-const user = "";
-const pass = "";
+var user = "";
+var pass = "";
 
 const actualizarUsuario = (e)=>{
   user = e.target.value
@@ -41,8 +47,7 @@ const actualizarContra = (e)=>{
 
 const CompleteFormExample = () => {
   let iniciarSesion = () => {
-    route = "/"
-    usr.usuario = "user1"
+    login();
   }  
   
     return (

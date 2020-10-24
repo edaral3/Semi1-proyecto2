@@ -14,10 +14,8 @@ const Login = () => (
     <Container fluid className="px-0">
     </Container>
     <Container fluid className="main-content-container px-4">
-
       <Row>
         <Col lg="8" className="mb-4">
-
           {/* Complete Form Example */}
           <Card small>
             <CardHeader className="border-bottom">

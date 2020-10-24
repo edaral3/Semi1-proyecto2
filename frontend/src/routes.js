@@ -22,10 +22,10 @@ export default [{
         path: "/",
         exact: true,
         layout: DefaultLayout,
-        component: () => < Redirect to = "/blog-overview" / >
+        component: () => < Redirect to = "/inicio" / >
     },
     {
-        path: "/blog-overview",
+        path: "/inicio",
         layout: DefaultLayout,
         component: BlogOverview
     },

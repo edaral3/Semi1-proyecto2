@@ -5,10 +5,6 @@ import {
   Col,
   Card,
   CardHeader,
-  ListGroup,
-  ListGroupItem,
-  Form,
-  Alert
 } from "shards-react";
 
 import CompleteFormExample from "../components/components-overview/CompleteFormExample";
