@@ -78,7 +78,7 @@ class ChatApp extends Component {
     return (
       <div className="App">
         <br></br>
-            ChatBot Casos
+            Chat General
         <ul>
           {mensajesLista}
         </ul>

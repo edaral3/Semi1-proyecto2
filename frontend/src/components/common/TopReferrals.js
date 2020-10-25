@@ -44,6 +44,8 @@ class TopReferrals extends React.Component {
         })
       })
       .catch()
+      
+      localStorage.setItem('usuarios', JSON.stringify(list))
       this.setState({friends:list})
   }
 

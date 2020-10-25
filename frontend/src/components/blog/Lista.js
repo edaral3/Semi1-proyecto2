@@ -47,13 +47,13 @@ function List(props) {
                         {/* Content :: Title */}
                         <div className="blog-comments__meta text-mutes">
                             <a className="text-secondary" >
-                                nombre
-              </a>{" "}
+                                {item.user}
+                            </a>{" "}
 
                         </div>
                         <img src={item.url} width="1000" height="600" />
                         {/* Content :: Body */}
-                        <Texto texto={item.body}/>
+                        <Texto texto={item.body} />
                         <Item tags={item.etiquetas} />
                         <br></br>
                         <span className="text-mutes">--- {item.date}</span>

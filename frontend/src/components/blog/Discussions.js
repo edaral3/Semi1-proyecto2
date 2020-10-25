@@ -16,7 +16,8 @@ import axios from 'axios';
 import Lista from './Lista';
 
 
-var data = JSON.parse(localStorage.getItem('usuario')); 
+var data = JSON.parse(localStorage.getItem('usuario'));
+var data2 = JSON.parse(localStorage.getItem('usuarios'));
 class Discussions extends React.Component {
   constructor(props) {
     super(props)
@@ -47,13 +48,22 @@ class Discussions extends React.Component {
             url: publicacion.image,
             body: publicacion.description,
             etiquetas: publicacion.labels,
-            user: publicacion.idUser
+            user: "usuario"
           }
+          data2.forEach(usr => {
+            if (usr._id == publicacion.idUser) {
+              item.user = usr.body
+            }
+            if (publicacion.idUser == data._id) {
+              item.user = data.fullname
+            }
+          })
           lista.push(item)
         })
       })
       .catch()
 
+    console.log(data)
     this.setState({ publicaciones: lista })
   }
 

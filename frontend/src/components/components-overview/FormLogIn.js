@@ -23,7 +23,6 @@ const login = () => {
       .then(result => {
         if(result.data.message!="Usuario o contraseña no valido"){
           route = "/inicio"
-          console.log(result.data.user)
           localStorage.setItem('usuario', JSON.stringify(result.data.user))
         }
         else{
