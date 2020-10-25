@@ -7,9 +7,11 @@ import {
   DropdownItem,
   Collapse,
   NavItem,
-  NavLink
+  NavLink,
+  Button
 } from "shards-react";
 
+var data = JSON.parse(localStorage.getItem('usuario')); 
 export default class UserActions extends React.Component {
   constructor(props) {
     super(props);
@@ -27,21 +29,27 @@ export default class UserActions extends React.Component {
     });
   }
 
+  CerrarSesion(){
+    localStorage.clear(); 
+  }
+
   render() {
     return (
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src={require("./../../../../images/avatars/2.jpg")}
+            src={data.profileImage}
             alt="User Avatar"
           />{" "}
-          <span className="d-none d-md-inline-block">User</span>
+          <span className="d-none d-md-inline-block">{data.username}</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
           <DropdownItem divider />
-          <DropdownItem tag={Link} to="/" className="text-danger">
-            <i className="material-icons text-danger">&#xE879;</i> Logout
+          <DropdownItem tag={Link}to="/" className="text-danger">
+            <Button  onClick={this.CerrarSesion}>
+            <i onClick={this.CerrarSesion} className="material-icons text-danger" >&#xE879;</i> Cerrar Session
+            </Button>
           </DropdownItem>
         </Collapse>
       </NavItem>

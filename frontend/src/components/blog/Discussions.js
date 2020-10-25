@@ -17,7 +17,6 @@ import Lista from './Lista';
 
 
 var data = JSON.parse(localStorage.getItem('usuario'));
-var data2 = JSON.parse(localStorage.getItem('usuarios'));
 class Discussions extends React.Component {
   constructor(props) {
     super(props)
@@ -33,6 +32,21 @@ class Discussions extends React.Component {
   }
 
   filtrar = async () => {
+    let data2 = []
+  
+    await axios.get('http://54.163.33.24/user/getFriends/' + data._id)
+      .then(result => {
+        result.data.users.forEach((user)=>{
+          let item = {
+            backgroundImage: user.profileImage,
+            title: user.username,
+            body: user.fullname,
+            _id: user._id
+          }
+          data2.push(item)
+        })
+      })
+      .catch()
     let lista = []
     this.state.search = this.state.search == "" ? "All" : this.state.search
     await axios.get('http://54.163.33.24/publication/get/' + data._id + '/' + this.state.search)
@@ -62,8 +76,6 @@ class Discussions extends React.Component {
         })
       })
       .catch()
-
-    console.log(data)
     this.setState({ publicaciones: lista })
   }
 

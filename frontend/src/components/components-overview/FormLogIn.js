@@ -18,7 +18,6 @@ const login = () => {
     user: user,
     pass: pass
   }
-  console.log(body)
   axios.post('http://54.163.33.24/user/login', body)
       .then(result => {
         if(result.data.message!="Usuario o contraseña no valido"){
