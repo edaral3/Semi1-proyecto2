@@ -28,8 +28,7 @@ const login = () => {
           route = "/Login";
         }   
       })
-      .catch()  
-    
+      .catch()      
     }
 let route = "/Login";
 

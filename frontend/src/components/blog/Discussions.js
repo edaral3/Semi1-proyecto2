@@ -41,7 +41,8 @@ class Discussions extends React.Component {
             backgroundImage: user.profileImage,
             title: user.username,
             body: user.fullname,
-            _id: user._id
+            _id: user._id,
+            img: user.profileImage
           }
           data2.push(item)
         })
@@ -64,12 +65,15 @@ class Discussions extends React.Component {
             etiquetas: publicacion.labels,
             user: "usuario"
           }
+          console.log(data)
           data2.forEach(usr => {
             if (usr._id == publicacion.idUser) {
               item.user = usr.body
+              item.author.image = usr.img
             }
             if (publicacion.idUser == data._id) {
               item.user = data.fullname
+              item.author.image = data.profileImage
             }
           })
           lista.push(item)

@@ -20,75 +20,94 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-var data = JSON.parse(localStorage.getItem('usuario')); 
+var data = JSON.parse(localStorage.getItem('usuario'));
 
 var usuario = "";
 var nombre = "";
 var state = "";
 var imagen = "";
+var contrasena = "";
+var usuarioActualizado = ""
 
-if(data != null){
+if (data != null) {
   usuario = data.username;
   nombre = data.fullname;
   state = data.modeBot;
-  imagen = data.profileImage;  
+  imagen = "";
 }
 
-const CompleteFormExample = () => {
-  const webcamRef = React.useRef(null);
-
-  const registrar = () => {
-    if(usuario == undefined || usuario == ""){
-      usuario =  data.username
-    }else{
-      data.username = usuario
+class CompleteFormExample extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      data: data,
+      usuarioActualizado: ""
+    };
+  }
+  registrar = async() => {
+    if (usuario == undefined || usuario == "") {
+      usuario = data.username
     }
-    if(nombre == undefined || nombre == ""){
-      nombre =  data.fullname
-    }else{
-      data.fullname = nombre
+    if (nombre == undefined || nombre == "") {
+      nombre = data.fullname
     }
-    if(state == undefined){
-      state =  data.modeBot
-    }else{
-      data.modeBot = state
+    if (state == undefined) {
+      state = data.modeBot
     }
     let body = {
-        user : usuario,
-        name : nombre,
-        modeBot : state,
-        sourceBase64 : imagen
+      user: usuario,
+      name: nombre,
+      modeBot: this.state.modeBot,
+      sourceBase64: imagen,
+      pass: contrasena
     }
-    console.log(data)
-    localStorage.setItem('usuario', JSON.stringify(data))
-    axios.put('http://54.163.33.24/user/update/' + data._id, body)
+    console.log(body)
+    await axios.put('http://54.163.33.24/user/update/' + data._id, body)
       .then(result => {
+        console.log(result.data)
       })
       .catch()
 
+    body = {
+      user: usuario,
+      pass: contrasena
+    }
+    await axios.post('http://54.163.33.24/user/login', body)
+      .then(result => {
+        if (result.data.message != "Usuario o contraseña no valido") {
+          localStorage.setItem('usuario', JSON.stringify(result.data.user))
+        }
+      })
+      .catch()
+      data = JSON.parse(localStorage.getItem('usuario'));
+      usuarioActualizado = "Usuario Actualizado"
+      console.log(data)
+      this.setState({data:data,usuarioActualizado:usuarioActualizado})
   }
 
-  const capture = React.useCallback(
-    () => {
-      const imageSrc = webcamRef.current.getScreenshot();
-      imagen = imageSrc
-    },
-    [webcamRef]
-  );
+  doClick() {
+    let file = document.getElementById("input").files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      imagen = reader.result
+    };
+  }
 
-  const actualizarNombre = (e) => {
+  actualizarNombre = (e) => {
     nombre = e.target.value
   }
-  const actualizarUsario = (e) => {
+  actualizarUsario = (e) => {
     usuario = e.target.value
   }
-  const actualizarContra1 = (e) => {
-
+  actualizarContra1 = (e) => {
+    contrasena = e.target.value
   }
-  const obtenerCheck = () => {
-    state = !state
+  obtenerCheck = () => {
+    this.state.modeBot = !this.state.modeBot
   }
 
+  render(){
   return (
     <ListGroup flush>
       <ListGroupItem className="p-3">
@@ -101,25 +120,25 @@ const CompleteFormExample = () => {
                 <Col md="6" className="form-group">
                   <label htmlFor="feEmailAddress">Nombre Completo</label>
                   <FormInput
-                    onChange={actualizarNombre.bind(this)}
+                    onChange={this.actualizarNombre.bind(this)}
                     id="feEmailAddress"
                     type="user"
-                    placeholder={data.fullname}
+                    placeholder={this.state.data.fullname}
                   />
                 </Col>
                 <Col md="6" className="form-group">
                   <label htmlFor="feEmailAddress">Usuario</label>
                   <FormInput
-                    onChange={actualizarUsario.bind(this)}
+                    onChange={this.actualizarUsario.bind(this)}
                     id="user"
                     type="user"
-                    placeholder={data.username}
+                    placeholder={this.state.data.username}
                   />
                 </Col>
                 <Col md="6">
                   <label htmlFor="fePassword">Contraseña</label>
                   <FormInput
-                    onChange={actualizarContra1.bind(this)}
+                    onChange={this.actualizarContra1.bind(this)}
                     id="fePassword"
                     type="password"
                     placeholder="******"
@@ -128,8 +147,8 @@ const CompleteFormExample = () => {
                 <Col md="6">
                   <br></br>
                   <FormCheckbox toggle small
-                    defaultChecked={state}
-                    onClick={obtenerCheck}>
+                    defaultChecked={this.state.data.modeBot}
+                    onClick={this.obtenerCheck}>
                     Modo Bot
                     </FormCheckbox>
                 </Col>
@@ -141,15 +160,10 @@ const CompleteFormExample = () => {
         </Row>
         <Row>
           <Col md="6">
-            <img src={data.profileImage} width="500" height="300" />
+            <img src={this.state.data.profileImage} width="500" height="300" />
           </Col>
           <Col md="6">
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-            />
+            <input type="file" id="input" onChange={this.doClick}></input>
             <br></br>
           </Col>
         </Row>
@@ -158,17 +172,15 @@ const CompleteFormExample = () => {
         <Row>
           <Col>
             <Button
-              onClick={registrar}
+              onClick={this.registrar}
               type="submit">
               Actualizar
                   </Button></Col>
-          <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
-
         </Row>
         <br></br>
         <Row>
 
-          <Col></Col>
+          <Col>{this.state.usuarioActualizado} </Col>
           <Col>
             <br></br>
           </Col>
@@ -178,5 +190,5 @@ const CompleteFormExample = () => {
       </ListGroupItem>
     </ListGroup>
   );
-}
+}}
 export default CompleteFormExample;

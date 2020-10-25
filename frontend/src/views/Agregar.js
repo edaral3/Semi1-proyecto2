@@ -57,7 +57,7 @@ class Agregar extends React.Component {
                         <p className="card-text d-inline-block mb-3">{this.props.post.body}</p>
                         <div className="my-auto ml-auto">
                             <Button onClick={this.agregarAmigo} size="sm" theme="white">
-                                <i className="far fa fa-user-plus mr-1" /> Aagregar
+                                <i className="far fa fa-user-plus mr-1" /> Agregar
                     </Button>
                         </div>
                     </CardBody>

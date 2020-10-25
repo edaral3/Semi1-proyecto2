@@ -39,7 +39,7 @@ function List(props) {
                 <div className="blog-comments__item d-flex p-3">
                     {/* Avatar */}
                     <div className="blog-comments__avatar mr-3">
-                        <img src={require("../../images/avatars/1.jpg")} />
+                        <img src={item.author.image} />
                     </div>
 
                     {/* Content */}

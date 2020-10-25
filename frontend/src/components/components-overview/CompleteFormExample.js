@@ -62,6 +62,15 @@ const capture = React.useCallback(
   [webcamRef]
 );
 
+
+const doClick = () => {
+  let file = document.getElementById("input").files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    imagen = reader.result
+  };
+}
 const actualizarNombre = (e)=>{
   nombre = e.target.value
 }
@@ -126,26 +135,18 @@ const actualizarContra2 = (e)=>{
             </Col>
           </Row>
           <Col md="6">
-            <Webcam
-              audio={false}
-              height={300}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              width={1200}
-              videoConstraints={videoConstraints}
-            />
+          <input type="file" id="input" onChange={doClick}></input>
+          
             <br></br>
           </Col>
           <Row>
           </Row>
           <Row>
             <Col></Col>
-            <Col><Button onClick={capture}>Tomar Foto</Button>  </Col>
-
+            
           </Row>
           <br></br>
           <Row>
-            <Col></Col>
             <Col>
               <Button
                 onClick={registrar}

@@ -88,7 +88,7 @@ class ChatApp extends Component {
             type="text"
             onChange={this.actualizarMensaje.bind(this)}
           />
-          <Button>
+          <Button onClick={this.handleSubmit.bind(this)}>
             Enviar
               </Button>
         </form>

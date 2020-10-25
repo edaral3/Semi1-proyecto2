@@ -7,7 +7,7 @@ import { Line } from "react-chartjs-2";
 
 var data = JSON.parse(localStorage.getItem('usuario'));
 
-class chatGraficaCasos extends Component {
+class chatGraficaCasos extends React.Component {
   constructor() {
     super();
     const data = {
@@ -66,7 +66,7 @@ class chatGraficaCasos extends Component {
         this.contador++
         const nuevoMensaje2 = {
           id: this.state.mensajes.length,
-          texto: "+ ¿Rando de Fechas? (año/mes/dia a año/mes/dia)"
+          texto: "+ ¿Rando de Fechas? (año-mes-dia a año-mes-dia)"
         }
         list.push(nuevoMensaje2)
       }
@@ -150,7 +150,7 @@ class chatGraficaCasos extends Component {
             type="text"
             onChange={this.actualizarMensaje.bind(this)}
           />
-          <Button>
+          <Button onClick={this.handleSubmit.bind(this)}>
             Envir
               </Button>
 

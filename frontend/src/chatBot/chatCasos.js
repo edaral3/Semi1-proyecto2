@@ -36,7 +36,7 @@ class ChatApp extends Component {
         this.contador++
         const nuevoMensaje2 = {
           id: this.state.mensajes.length,
-          texto: "+ ¿Fecha? (año/mes/dia)"
+          texto: "+ ¿Fecha? (año-mes-dia)"
         }
         list.push(nuevoMensaje2)
       }
@@ -128,7 +128,7 @@ class ChatApp extends Component {
             type="text"
             onChange={this.actualizarMensaje.bind(this)}
           />
-          <Button>
+          <Button onClick={this.handleSubmit.bind(this)}>
             Enviar
               </Button>
         </form>
