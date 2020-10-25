@@ -16,13 +16,14 @@ import BlogPosts from "./views/BlogPosts";
 import SignUp from "./SignUp/SignUp"
 import Login from "./SignIn/SignIn";
 import Perfil from "./Perfil/Perfil";
+import ChatsBot from "./chatBot/chats";
 import Chats from "./chat/chats";
 
 export default [{
         path: "/",
         exact: true,
         layout: DefaultLayout,
-        component: () => < Redirect to = "/inicio" / >
+        component: () => < Redirect to = "/SignUp" / >
     },
     {
         path: "/inicio",
@@ -35,9 +36,9 @@ export default [{
         component: UserProfileLite
     },
     {
-        path: "/add-new-post",
+        path: "/chat",
         layout: DefaultLayout,
-        component: AddNewPost
+        component: Chats
     },
     {
         path: "/errors",
@@ -55,7 +56,7 @@ export default [{
         component: Tables
     },
     {
-        path: "/blog-posts",
+        path: "/AddFriend",
         layout: DefaultLayout,
         component: BlogPosts
     },
@@ -75,8 +76,8 @@ export default [{
         component: Perfil
     },
     {
-        path: "/chat",
+        path: "/chatBot",
         layout: DefaultLayout,
-        component: Chats
+        component: ChatsBot
     }
 ];

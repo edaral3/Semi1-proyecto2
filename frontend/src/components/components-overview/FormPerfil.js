@@ -1,6 +1,5 @@
 import React from "react";
 import Webcam from "react-webcam";
-import usr from '../../userLoguin';
 import {
   ListGroup,
   ListGroupItem,
@@ -21,56 +20,48 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-var usuario = usr.usuario.username;
-var nombre = usr.usuario.fullname;
-var contrasena = usr.pass;
-var state = usr.usuario.modeBot;
-var imagen = usr.usuario.profileImage;
+var data = JSON.parse(localStorage.getItem('usuario')); 
+
+var usuario = "";
+var nombre = "";
+var state = "";
+var imagen = "";
+
+if(data != null){
+  usuario = data.username;
+  nombre = data.fullname;
+  state = data.modeBot;
+  imagen = data.profileImage;  
+}
 
 const CompleteFormExample = () => {
   const webcamRef = React.useRef(null);
 
-
-  const cargarDatos = () => {
-    let body ={
-      user: usr.usuario.username,
-      pass: usr.pass
-    }
-    console.log(body)
-    axios.post('http://54.163.33.24/user/login', body)
-      .then(result => {
-        usr.usuario = result.data.user
-      })
-      .catch()  
-  }
-
   const registrar = () => {
     if(usuario == undefined || usuario == ""){
-      usuario =  usr.usuario.username
+      usuario =  data.username
     }else{
-      usr.usuario.username = usuario
+      data.username = usuario
     }
     if(nombre == undefined || nombre == ""){
-      nombre =  usr.usuario.fullname
+      nombre =  data.fullname
     }else{
-      usr.usuario.fullname = nombre
-    }
-    if(contrasena == undefined || contrasena == ""){
-      contrasena =  usr.pass
-    }else{
-      usr.pass = contrasena
+      data.fullname = nombre
     }
     if(state == undefined){
-      state =  usr.usuario.modeBot
+      state =  data.modeBot
+    }else{
+      data.modeBot = state
     }
     let body = {
         user : usuario,
         name : nombre,
-        pass : contrasena,
         modeBot : state,
         sourceBase64 : imagen
     }
-    axios.put('http://54.163.33.24/user/update/' + usr.usuario._id, body)
+    console.log(data)
+    localStorage.setItem('usuario', JSON.stringify(data))
+    axios.put('http://54.163.33.24/user/update/' + data._id, body)
       .then(result => {
       })
       .catch()
@@ -92,7 +83,7 @@ const CompleteFormExample = () => {
     usuario = e.target.value
   }
   const actualizarContra1 = (e) => {
-    contrasena = e.target.value
+
   }
   const obtenerCheck = () => {
     state = !state
@@ -102,8 +93,6 @@ const CompleteFormExample = () => {
     <ListGroup flush>
       <ListGroupItem className="p-3">
         <Row>
-          <Col><Button onClick={cargarDatos}>Cargar Datos</Button>  </Col>
-
         </Row>
         <Row>
           <Col>
@@ -115,7 +104,7 @@ const CompleteFormExample = () => {
                     onChange={actualizarNombre.bind(this)}
                     id="feEmailAddress"
                     type="user"
-                    placeholder={usr.usuario.fullname}
+                    placeholder={data.fullname}
                   />
                 </Col>
                 <Col md="6" className="form-group">
@@ -124,7 +113,7 @@ const CompleteFormExample = () => {
                     onChange={actualizarUsario.bind(this)}
                     id="user"
                     type="user"
-                    placeholder={usr.usuario.username}
+                    placeholder={data.username}
                   />
                 </Col>
                 <Col md="6">
@@ -133,7 +122,7 @@ const CompleteFormExample = () => {
                     onChange={actualizarContra1.bind(this)}
                     id="fePassword"
                     type="password"
-                    placeholder={usr.pass}
+                    placeholder="******"
                   />
                 </Col>
                 <Col md="6">
@@ -152,7 +141,7 @@ const CompleteFormExample = () => {
         </Row>
         <Row>
           <Col md="6">
-            <img src={usr.usuario.profileImage} width="500" height="300" />
+            <img src={data.profileImage} width="500" height="300" />
           </Col>
           <Col md="6">
             <Webcam

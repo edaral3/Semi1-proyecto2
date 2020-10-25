@@ -8,11 +8,11 @@ import {
   FormInput,
   Button
 } from "shards-react";
-
-import usr from '../../userLoguin';
 import { Link, withRouter  } from 'react-router-dom';
 import axios from 'axios';
-  
+//import {defineState} from 'redux-localstore'
+
+
 const login = () => {
   let body ={
     user: user,
@@ -22,9 +22,9 @@ const login = () => {
   axios.post('http://54.163.33.24/user/login', body)
       .then(result => {
         if(result.data.message!="Usuario o contraseña no valido"){
-          route = "/"
-          usr.usuario = result.data.user
-          usr.pass = pass
+          route = "/inicio"
+          console.log(result.data.user)
+          localStorage.setItem('usuario', JSON.stringify(result.data.user))
         }
         else{
           route = "/Login";
@@ -39,9 +39,11 @@ var user = "";
 var pass = "";
 
 const actualizarUsuario = (e)=>{
+  route = "/Login";
   user = e.target.value
 }
 const actualizarContra = (e)=>{
+  route = "/Login";
   pass = e.target.value
 }
 

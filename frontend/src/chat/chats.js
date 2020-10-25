@@ -6,41 +6,78 @@ import {
   Card,
   CardHeader,
 } from "shards-react";
+import Button from '@material-ui/core/Button';
 import ChatCasos from "./chatCasos";
-import ChatGraficaCasos from "./chatGraficaCasos";
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
+import Agregar from './Agregar'
+import axios from 'axios';
 
-const Chats = () => (
-  <div>
-      <Container fluid className="px-0">
-    </Container>
-    <Container fluid className="main-content-container px-4">
+var data = JSON.parse(localStorage.getItem('usuario'));
+var listaUsers = []
 
-    <Row>
-        <Col lg="5" className="mb-6">
+
+
+class Chats extends React.Component {
+  constructor(prop) {
+    super(prop);
+    this.state = {
+      mensaje: '',
+      mensajes: [],
+      PostsListOne: [],
+    };
+  }
+
+  obtenerUsuarios = async () => {
+    let list = []
+    await axios.get('http://54.163.33.24/user/getFriends/' + data._id)
+      .then(result => {
+        result.data.users.forEach((user) => {
+          let item = {
+            backgroundImage: user.profileImage,
+            title: user.username,
+            body: user.fullname,
+            _id: user._id
+          }
+          list.push(item)
+        })
+      })
+      .catch()
+    this.setState({ PostsListOne: list })
+  }
+  render() {
+    return (
+      <div>
+
+        <Container fluid className="main-content-container px-4">
+          {/* Page Header */}
+          <Row noGutters className="page-header py-4">
             <Card small>
-              
-            <Toolbar>
-              <Typography type="title" color="inherit">
-                <ChatCasos/>           
+              <Toolbar>
+                <Typography type="title" color="inherit">
+                  <ChatCasos />
                 </Typography>
               </Toolbar>
             </Card>
-        </Col>
-        <Col lg="5" className="mb-6">
-            <Card small>
-              
-            <Toolbar>
-              <Typography type="title" color="inherit">
-                <ChatGraficaCasos/>           
-                </Typography>
-              </Toolbar>
-            </Card>
-        </Col>
-      </Row>
-    </Container>
-  </div>
-);
+          </Row>
+
+          <Row>
+            <Button onClick={this.obtenerUsuarios} size="sm" theme="white">
+              <i className="far fa-address-book mr-1" /> Mostrar Usuarios
+          </Button>
+          </Row>
+          <br></br>
+          {/* First Row of Posts */}
+          <Row>
+            {this.state.PostsListOne.map((post) => (
+              <Agregar post={post} />
+            ))}
+          </Row>
+        </Container>
+
+      </div>
+    );
+  }
+}
 
 export default Chats;

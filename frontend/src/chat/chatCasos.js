@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-
-import axios from 'axios';
+import {
+  Row
+} from "shards-react";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+var data = JSON.parse(localStorage.getItem('usuario'));
+
 class ChatApp extends Component {
-  constructor(prop){
+  constructor(prop) {
     super(prop);
     this.state = {
       mensaje: '',
-      mensajes: [
-        {id: 0, texto: "+ ¿Pais?"}
-      ]
+      mensajes: [],
+      count: 0
     };
   }
 
@@ -20,96 +22,56 @@ class ChatApp extends Component {
   contador = 0;
   handleSubmit(e) {
     e.preventDefault();
-    const list = this.state.mensajes;
+    let id = this.state.count
+    if (id == undefined) {
+      id = 0
+    }
+    var idMensaje = JSON.parse(localStorage.getItem('chat'));
+    if (idMensaje == null) {
+      idMensaje = "error"
+    }
     const nuevoMensaje = {
-      id: this.state.mensajes.length,
-      texto: "# " + this.state.mensaje
+      id: id,
+      texto: data.username + "->  " + this.state.mensaje,
+      user: data.username,
+      idmsj: idMensaje.idMensaje
     }
-    list.push(nuevoMensaje)
+    window.firebase.database().ref(`messages2/${nuevoMensaje.id}`)
+    .set(nuevoMensaje);
 
-    
-    if(this.contador == 0){
-      this.pais = this.state.mensaje
-      this.contador++
-      const nuevoMensaje2 = {
-        id: this.state.mensajes.length,
-        texto: "+ ¿Fecha? (año/mes/dia)"
-      }
-      list.push(nuevoMensaje2)
-    }
-    else if(this.contador == 1){
-      this.fechas = this.state.mensaje
-      this.contador++
-      const nuevoMensaje3 = {
-        id: this.state.mensajes.length,
-        texto: "+ Tipo de casos (confirmados, recuperados, muertes o todos)"
-      }
-      list.push(nuevoMensaje3)
-    }
-    else if(this.contador == 2){
-      let body = JSON.parse(`{"pais": "${this.pais}", "fecha": ["${this.fechas}"]}`)  
-      
-      axios.post('https://ysem0cgt12.execute-api.us-east-2.amazonaws.com/Version-2/chat-bot', body)
-      .then(result => {
-        console.log(result.data)
-        let datos = result.data.datos
-        let msj = "- El pais, la fecha o el tipo son incorrectos"
-        switch(this.state.mensaje.toLowerCase()){
-          case 'confirmados':
-            if(datos[0].confirmados.length != 0){
-              msj = "* " + datos[0].confirmados[0]+" casos confirmados."
-            }
-            break
-          case 'recuperados':
-            if(datos[2].recuperados.length != 0){
-              msj = "* " + datos[2].recuperados[0]+" personas recuperadas."
-            }
-            break
-          case 'muertes':
-            if(datos[1].muertos.length != 0){
-              msj = datos[1].muertos[0]+" personas fallecidas."
-            }
-            break
-          case 'todos':
-            if(datos[0].confirmados.length != 0){
-              msj = "* " + datos[0].confirmados[0]+" casos confirmados, "+
-              datos[2].recuperados[0] + " personas recuperadas, "+
-              datos[1].muertos[0] + " personas muertas."
-            }
-            break
-        }
-
-        console.log(datos[0].confirmados.length )
-        
-        const nuevoMensaje4 = {
-          id: this.state.mensajes.length,
-          texto: msj
-        }
-        list.push(nuevoMensaje4)
-        
-      const nuevoMensaje1 = {
-        id: this.state.mensajes.length,
-        texto: "+ ¿Pais?"
-      }
-      list.push(nuevoMensaje1)
-      this.setState({mensajes: list})
-      })
-      .catch()  
-
-      this.contador = 0
-    }
- 
-
-    this.setState({mensajes: list})
+    this.setState({ mensaje: '' })
   }
 
-  actualizarMensaje(e){
-    this.setState({mensaje: e.target.value})
+  actualizarMensaje(e) {
+    this.setState({ mensaje: e.target.value })
   }
 
-  render(){
-    const mensajes = this.state.mensajes
-    const mensajesLista = mensajes.map(mensaje => {
+
+  componentDidMount() {
+    var idMensaje = JSON.parse(localStorage.getItem('chat'));
+    if (idMensaje == null) {
+      idMensaje = "error"
+    }
+    window.firebase.database().ref(`messages2/`).on('value', snap => {
+      const currentMessages = snap.val();
+      if (currentMessages !== null) {
+        let list = []
+        currentMessages.forEach(element => {
+          if (element.idmsj == idMensaje.idMensaje) {
+            list.push(element)
+          }
+        });
+        
+        this.setState({
+          mensajes: list, count:currentMessages.length
+        })
+      }
+    })
+  }
+
+  render() {
+    var mensajes = this.state.mensajes
+    var mensajesLista = mensajes.map(mensaje => {
       return <li>{mensaje.texto}</li>
     });
 
@@ -117,19 +79,23 @@ class ChatApp extends Component {
       <div className="App">
         <br></br>
             ChatBot Casos
-            <ul>
-              {mensajesLista}
-            </ul>
+        <ul>
+          {mensajesLista}
+        </ul>
 
-            <form onSubmit={this.handleSubmit.bind(this)}>
-              <TextField 
-                type="text"
-                onChange={this.actualizarMensaje.bind(this)}
-              />
-              <Button>
-                Enviar
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <TextField
+            type="text"
+            onChange={this.actualizarMensaje.bind(this)}
+          />
+          <Button>
+            Enviar
               </Button>
-            </form>
+        </form>
+
+        {/* First Row of Posts */}
+        <Row>
+        </Row>
         <br></br>
       </div>
     )

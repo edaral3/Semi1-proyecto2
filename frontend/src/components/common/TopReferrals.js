@@ -9,103 +9,88 @@ import {
   CardFooter,
   Row,
   Col,
+  Button,
   FormSelect
 } from "shards-react";
+import axios from 'axios';
 
-const TopReferrals = ({ title, referralData }) => (
-  <Card small>
-    <CardHeader className="border-bottom">
-      <h6 className="m-0">{title}</h6>
-      <div className="block-handle" />
-    </CardHeader>
 
-    <CardBody className="p-0">
-      <ListGroup small flush className="list-group-small">
-        {referralData.map((item, idx) => (
-          <ListGroupItem key={idx} className="d-flex px-3">
-            <span className="text-semibold text-fiord-blue">{item.title}</span>
-            <span className="ml-auto text-right text-semibold text-reagent-gray">
-              {item.value}
-            </span>
-          </ListGroupItem>
-        ))}
-      </ListGroup>
-    </CardBody>
+var data = JSON.parse(localStorage.getItem('usuario'))
 
-    <CardFooter className="border-top">
-      <Row>
-        {/* Time Span */}
-        <Col>
-          <FormSelect
-            size="sm"
-            value="last-week"
-            style={{ maxWidth: "130px" }}
-            onChange={() => {}}
-          >
-            <option value="last-week">Last Week</option>
-            <option value="today">Today</option>
-            <option value="last-month">Last Month</option>
-            <option value="last-year">Last Year</option>
-          </FormSelect>
-        </Col>
+class TopReferrals extends React.Component {
 
-        {/* View Full Report */}
-        <Col className="text-right view-report">
-          {/* eslint-disable-next-line */}
-          <a href="#">Full report &rarr;</a>
-        </Col>
-      </Row>
-    </CardFooter>
-  </Card>
-);
+  constructor(props) {
+    super(props)
 
-TopReferrals.propTypes = {
-  /**
-   * The component's title.
-   */
-  title: PropTypes.string,
-  /**
-   * The referral data.
-   */
-  referralData: PropTypes.array
-};
-
-TopReferrals.defaultProps = {
-  title: "Top Referrals",
-  referralData: [
-    {
-      title: "GitHub",
-      value: "19,291"
-    },
-    {
-      title: "Stack Overflow",
-      value: "11,201"
-    },
-    {
-      title: "Hacker News",
-      value: "9,291"
-    },
-    {
-      title: "Reddit",
-      value: "8,281"
-    },
-    {
-      title: "The Next Web",
-      value: "7,128"
-    },
-    {
-      title: "Tech Crunch",
-      value: "6,218"
-    },
-    {
-      title: "YouTube",
-      value: "1,218"
-    },
-    {
-      title: "Adobe",
-      value: "1,171"
+    this.state = {
+      friends: [],
     }
-  ]
-};
+  }
+  
+  
+  obtenerUsuarios = async () => {
+    let list = []
+  
+    await axios.get('http://54.163.33.24/user/getFriends/' + data._id)
+      .then(result => {
+        result.data.users.forEach((user)=>{
+          let item = {
+            backgroundImage: user.profileImage,
+            title: user.username,
+            body: user.fullname,
+            _id: user._id
+          }
+          list.push(item)
+        })
+      })
+      .catch()
+      this.setState({friends:list})
+  }
 
+  render() {
+    return (
+      <Card small>
+        <CardHeader className="border-bottom">
+          <Row>
+            <Col>
+              <h6 className="m-0">Mis Amigos</h6>
+            </Col>
+            <Col>
+              <Button onClick={this.obtenerUsuarios}>
+                Mostrar
+        </Button>
+            </Col>
+          </Row>
+
+          <div className="block-handle" />
+        </CardHeader>
+
+        <CardBody className="p-0">
+          <ListGroup small flush className="list-group-small">
+            {this.state.friends.map((item) => (
+              <ListGroupItem className="d-flex px-3">
+                <span className="text-semibold text-fiord-blue">{item.body}</span>
+                <span className="ml-auto text-right text-semibold text-reagent-gray">
+                  {item.title}
+                </span>
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </CardBody>
+
+        <CardFooter className="border-top">
+          <Row>
+            {/* Time Span */}
+            
+
+            {/* View Full Report */}
+            <Col className="text-right view-report">
+              {/* eslint-disable-next-line */}
+            </Col>
+          </Row>
+        </CardFooter>
+      </Card>
+    )
+  };
+}
 export default TopReferrals;

@@ -1,29 +1,29 @@
 export default function() {
     return [{
-            title: "Todos",
-            to: "/blog-overview",
-            htmlBefore: '<i class="material-icons">edit</i>',
+            title: "Inicio",
+            htmlBefore: '<i class="material-icons">vertical_split</i>',
+            to: "/inicio",
             htmlAfter: ""
         },
         {
-            title: "Mapa",
-            htmlBefore: '<i class="material-icons">vertical_split</i>',
-            to: "/blog-posts",
+            title: "Perfil",
+            htmlBefore: '<i class="material-icons">edit</i>',
+            to: "/Perfil",
         },
         {
-            title: "Grafica",
+            title: "Agregar amigos",
             htmlBefore: '<i class="material-icons">note_add</i>',
-            to: "/add-new-post",
+            to: "/AddFriend",
+        },
+        {
+            title: "ChatBot",
+            htmlBefore: '<i class="material-icons">view_module</i>',
+            to: "/chatBot",
         },
         {
             title: "Chat",
             htmlBefore: '<i class="material-icons">view_module</i>',
             to: "/chat",
-        },
-        {
-            title: "Perfil",
-            htmlBefore: '<i class="material-icons">view_module</i>',
-            to: "/Perfil",
         }
     ];
 }

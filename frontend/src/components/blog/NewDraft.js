@@ -11,7 +11,6 @@ import {
   Button
 } from "shards-react";
 import axios from 'axios';
-import usr from '../../userLoguin';
 
 var base64 = "";
 var estado = "";
@@ -25,13 +24,14 @@ function doClick() {
   };
 }
 
+var data = JSON.parse(localStorage.getItem('usuario')); 
 const actualizarEstado = (e) => {
   estado = e.target.value
 }
 const publicar = () => {
   let body = {
     description : estado,
-    _id : usr.usuario._id, //corresponde al id del usuario que realizo la publicacion
+    _id : data._id, //corresponde al id del usuario que realizo la publicacion
     sourceBase64 :base64
   }
   console.log(body)
