@@ -57,7 +57,7 @@ class CompleteFormExample extends React.Component {
     let body = {
       user: usuario,
       name: nombre,
-      modeBot: this.state.modeBot,
+      modeBot: this.state.data.modeBot,
       sourceBase64: imagen,
       pass: contrasena
     }
@@ -104,7 +104,7 @@ class CompleteFormExample extends React.Component {
     contrasena = e.target.value
   }
   obtenerCheck = () => {
-    this.state.modeBot = !this.state.modeBot
+    this.state.data.modeBot = !this.state.data.modeBot
   }
 
   render(){
