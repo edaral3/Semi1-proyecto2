@@ -11,6 +11,7 @@ import {
 } from "shards-react";
 
 import axios from 'axios';
+import ruta from "../ruta"
 
 var data = JSON.parse(localStorage.getItem('usuario')); 
 class Agregar extends React.Component {
@@ -28,7 +29,7 @@ class Agregar extends React.Component {
             userFriend: this.props.post._id
         }
         console.log(body)
-        await axios.post('http://54.163.33.24/user/addFriend', body)
+        await axios.post(ruta+'/user/addFriend', body)
             .then(result => {
                 console.log(result.data)
             })

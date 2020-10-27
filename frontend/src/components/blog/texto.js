@@ -14,6 +14,7 @@ import {
 } from "shards-react";
 import axios from 'axios';
 import Lista from './Lista';
+import ruta from "../../ruta"
 
 class Texto extends React.Component{
   constructor(props){
@@ -32,7 +33,7 @@ class Texto extends React.Component{
     console.log(this.state)
     console.log("---------------------")
     let texto = ""
-    await axios.post('http://54.163.33.24/publication/translate', body)
+    await axios.post(ruta + '/publication/translate', body)
         .then(result => {
             texto = result.data.translate
             console.log(result)

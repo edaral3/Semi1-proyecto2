@@ -14,6 +14,7 @@ import {
 } from "shards-react";
 import axios from 'axios';
 
+import ruta from "../../ruta"
 
 var data = JSON.parse(localStorage.getItem('usuario'))
 
@@ -31,7 +32,7 @@ class TopReferrals extends React.Component {
   obtenerUsuarios = async () => {
     let list = []
   
-    await axios.get('http://54.163.33.24/user/getFriends/' + data._id)
+    await axios.get(ruta + '/user/getFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user)=>{
           let item = {

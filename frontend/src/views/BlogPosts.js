@@ -13,6 +13,7 @@ import {
 import PageTitle from "../components/common/PageTitle";
 import axios from 'axios';
 import Agregar from './Agregar'
+import ruta from "../ruta"
 
 var data = JSON.parse(localStorage.getItem('usuario')); 
 class BlogPosts extends React.Component {
@@ -28,7 +29,7 @@ class BlogPosts extends React.Component {
 
   obtenerUsuarios = async () => {
     let list = []
-    await axios.get('http://54.163.33.24/user/getNotFriends/' + data._id)
+    await axios.get(ruta+'/user/getNotFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user)=>{
           let item = {

@@ -14,6 +14,7 @@ import {
 } from "shards-react";
 import axios from 'axios';
 import Lista from './Lista';
+import ruta from "../../ruta"
 
 
 var data = JSON.parse(localStorage.getItem('usuario'));
@@ -34,7 +35,7 @@ class Discussions extends React.Component {
   filtrar = async () => {
     let data2 = []
   
-    await axios.get('http://54.163.33.24/user/getFriends/' + data._id)
+    await axios.get(ruta + '/user/getFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user)=>{
           let item = {
@@ -50,7 +51,7 @@ class Discussions extends React.Component {
       .catch()
     let lista = []
     this.state.search = this.state.search == "" ? "All" : this.state.search
-    await axios.get('http://54.163.33.24/publication/get/' + data._id + '/' + this.state.search)
+    await axios.get(ruta+'/publication/get/' + data._id + '/' + this.state.search)
       .then(result => {
         //result.data.publications
         result.data.publications.forEach(publicacion => {

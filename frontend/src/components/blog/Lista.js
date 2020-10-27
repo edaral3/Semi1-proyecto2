@@ -15,6 +15,7 @@ import {
     FormInput
 } from "shards-react";
 import axios from 'axios';
+import ruta from "../../ruta"
 
 const traducir = async (cadedna, e) => {
     let body = {
@@ -22,7 +23,7 @@ const traducir = async (cadedna, e) => {
     }
 
     let texto = ""
-    await axios.post('http://54.163.33.24/publication/translate', body)
+    await axios.post(ruta + '/publication/translate', body)
         .then(result => {
             texto = result.data.translate
             console.log(result)

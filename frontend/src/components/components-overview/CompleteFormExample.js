@@ -12,6 +12,7 @@ import {
 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ruta from "../../ruta"
 
 const videoConstraints = {
   width: 500,
@@ -46,7 +47,7 @@ const registrar = () => {
     sourceBase64: imagen 
   }
   console.log(body)
-  axios.post('http://54.163.33.24/user/signin', body)
+  axios.post(ruta+'/user/signin', body)
       .then(result => {
         console.log(result)
       })

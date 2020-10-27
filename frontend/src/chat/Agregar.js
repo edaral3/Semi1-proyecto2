@@ -10,7 +10,6 @@ import {
     Button
 } from "shards-react";
 
-import axios from 'axios';
 
 var data = JSON.parse(localStorage.getItem('usuario')); 
 class Agregar extends React.Component {

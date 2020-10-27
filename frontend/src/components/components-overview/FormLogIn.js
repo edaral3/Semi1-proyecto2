@@ -10,6 +10,7 @@ import {
 } from "shards-react";
 import { Link, withRouter  } from 'react-router-dom';
 import axios from 'axios';
+import ruta from "../../ruta"
 //import {defineState} from 'redux-localstore'
 
 
@@ -18,7 +19,7 @@ const login = () => {
     user: user,
     pass: pass
   }
-  axios.post('http://54.163.33.24/user/login', body)
+  axios.post(ruta+'/user/login', body)
       .then(result => {
         if(result.data.message!="Usuario o contraseña no valido"){
           route = "/inicio"

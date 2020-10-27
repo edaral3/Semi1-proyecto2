@@ -11,6 +11,7 @@ import {
   Button
 } from "shards-react";
 import axios from 'axios';
+import ruta from "../../ruta"
 
 var base64 = "";
 var estado = "";
@@ -35,7 +36,7 @@ const publicar = () => {
     sourceBase64 :base64
   }
   console.log(body)
-  axios.post('http://54.163.33.24/publication/create', body)
+  axios.post(ruta + '/publication/create', body)
       .then(result => {
         console.log(result)
       })
