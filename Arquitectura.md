@@ -1,6 +1,6 @@
 # Arquitectura
 ## Diagrama
-![Diagrama](arquitectura.png)
+![Diagrama](estructura.png)
 ## Herramientas utilizadas
 ### Administración
 * ``CloudFormation``: Proporciona un lenguaje común para modelar y aprovisiona recursos de aplicación de AWS y de terceros en el entorno de nube.
