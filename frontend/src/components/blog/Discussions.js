@@ -35,7 +35,7 @@ class Discussions extends React.Component {
   filtrar = async () => {
     let data2 = []
   
-    await axios.get(ruta + '/user/getFriends/' + data._id)
+    await axios.get(ruta.ruta + '/user/getFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user)=>{
           let item = {
@@ -51,7 +51,7 @@ class Discussions extends React.Component {
       .catch()
     let lista = []
     this.state.search = this.state.search == "" ? "All" : this.state.search
-    await axios.get(ruta+'/publication/get/' + data._id + '/' + this.state.search)
+    await axios.get(ruta.ruta+'/publication/get/' + data._id + '/' + this.state.search)
       .then(result => {
         //result.data.publications
         result.data.publications.forEach(publicacion => {

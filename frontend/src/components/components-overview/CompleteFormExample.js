@@ -46,8 +46,7 @@ const registrar = () => {
     pass: contrasena1,
     sourceBase64: imagen 
   }
-  console.log(body)
-  axios.post(ruta+'/user/signin', body)
+  axios.post(ruta.ruta+'/user/signin', body)
       .then(result => {
         console.log(result)
       })

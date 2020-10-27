@@ -63,7 +63,7 @@ class CompleteFormExample extends React.Component {
       pass: contrasena
     }
     console.log(body)
-    await axios.put(ruta+'/user/update/' + data._id, body)
+    await axios.put(ruta.ruta+'/user/update/' + data._id, body)
       .then(result => {
         console.log(result.data)
       })
@@ -73,7 +73,7 @@ class CompleteFormExample extends React.Component {
       user: usuario,
       pass: contrasena
     }
-    await axios.post(ruta+'/user/login', body)
+    await axios.post(ruta.ruta+'/user/login', body)
       .then(result => {
         if (result.data.message != "Usuario o contraseña no valido") {
           localStorage.setItem('usuario', JSON.stringify(result.data.user))

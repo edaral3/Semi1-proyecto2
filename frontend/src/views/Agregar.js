@@ -29,7 +29,7 @@ class Agregar extends React.Component {
             userFriend: this.props.post._id
         }
         console.log(body)
-        await axios.post(ruta+'/user/addFriend', body)
+        await axios.post(ruta.ruta+'/user/addFriend', body)
             .then(result => {
                 console.log(result.data)
             })

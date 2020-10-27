@@ -31,7 +31,7 @@ class Chats extends React.Component {
 
   obtenerUsuarios = async () => {
     let list = []
-    await axios.get(ruta + '/user/getFriends/' + data._id)
+    await axios.get(ruta.ruta + '/user/getFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user) => {
           let item = {

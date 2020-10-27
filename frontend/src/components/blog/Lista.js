@@ -23,7 +23,7 @@ const traducir = async (cadedna, e) => {
     }
 
     let texto = ""
-    await axios.post(ruta + '/publication/translate', body)
+    await axios.post(ruta.ruta + '/publication/translate', body)
         .then(result => {
             texto = result.data.translate
             console.log(result)

@@ -29,7 +29,7 @@ class BlogPosts extends React.Component {
 
   obtenerUsuarios = async () => {
     let list = []
-    await axios.get(ruta+'/user/getNotFriends/' + data._id)
+    await axios.get(ruta.ruta+'/user/getNotFriends/' + data._id)
       .then(result => {
         result.data.users.forEach((user)=>{
           let item = {

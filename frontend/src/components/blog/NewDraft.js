@@ -36,7 +36,7 @@ const publicar = () => {
     sourceBase64 :base64
   }
   console.log(body)
-  axios.post(ruta + '/publication/create', body)
+  axios.post(ruta.ruta + '/publication/create', body)
       .then(result => {
         console.log(result)
       })

@@ -19,7 +19,7 @@ const login = () => {
     user: user,
     pass: pass
   }
-  axios.post(ruta+'/user/login', body)
+  axios.post(ruta.ruta+'/user/login', body)
       .then(result => {
         if(result.data.message!="Usuario o contraseña no valido"){
           route = "/inicio"
