@@ -1,1 +1,1 @@
-exports.ruta = "localhost:4000";
+exports.ruta = "http://54.204.228.208:4000";
