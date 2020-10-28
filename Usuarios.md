@@ -80,3 +80,7 @@
 }
 
 ````
+### edaral
+* **Rol:** Usuario raiz
+* **Descripcion:** Usuario encargado del la creacion de la funcion Lambda y la API Gateway en AWS.
+* **Politicas Asociadas:** FullAccess
