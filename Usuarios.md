@@ -8,6 +8,11 @@
 * **Grupos:** Administradores
 * **Politicas Asociadas:** AdministratorAccess
 
+### edaral
+* **Rol:** Usuario raiz
+* **Descripcion:** Usuario encargado del la creacion de la funcion Lambda y la API Gateway en AWS.
+* **Politicas Asociadas:** FullAccess
+
 ### semi1-cognito
 * **Rol:** Administrador
 * **Descripcion:** Usuario encargado del mantenimiento de usuarios en Cognito.
@@ -80,7 +85,3 @@
 }
 
 ````
-### edaral
-* **Rol:** Usuario raiz
-* **Descripcion:** Usuario encargado del la creacion de la funcion Lambda y la API Gateway en AWS.
-* **Politicas Asociadas:** FullAccess
